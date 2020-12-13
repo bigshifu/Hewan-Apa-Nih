@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Hewan Apa Nih</string>
+    <string name="TakePhoto">Take a photo</string>
+    <string name="ChooseImage">Choose an image</string>
+    <string name="ExitApp">Exit App</string>
+    <string name="AboutPhoto">About Photo</string>
+    <string name="Settings">Settings</string>
+    <string name="LoadedImage">Loaded Image</string>
+    <string name="Description">Description</string>
+    <string name="Prediction">Prediction</string>
+    <string name="DescriptionContent">Recognize animals in a simple way.</string>
+    <string name="NightMode">Night Mode </string>
+</resources>

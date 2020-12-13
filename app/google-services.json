@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "678869358289",
+    "project_id": "hewan-apa-nih",
+    "storage_bucket": "hewan-apa-nih.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678869358289:android:8acc868dd4f4a1d896d7f0",
+        "android_client_info": {
+          "package_name": "com.example.hewanapanih"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678869358289-c73le6a5hf0e64vf02ie7ncmi3pcnqb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hewanapanih",
+            "certificate_hash": "edb82b7655afac3d508d5326e832aa154eda315f"
+          }
+        },
+        {
+          "client_id": "678869358289-k76ulj0o1vo477bqhmggs9iqbcvclej3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZhUoCHwo51k9pj_GsmiuHhXJ3iqXdy-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678869358289-k76ulj0o1vo477bqhmggs9iqbcvclej3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
