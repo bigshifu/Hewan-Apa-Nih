@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".Wikipedia">
 
     <ImageView
         android:id="@+id/imageViewWikipedia"
-        android:layout_width="365dp"
-        android:layout_height="253dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -19,21 +19,17 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewWikipedia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/deerhunter" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewWikipedia"
-        android:layout_width="0dp"
-        android:layout_height="230dp"
-        android:alpha="0.6"
-        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:fillViewport="true"
-        android:padding="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        android:padding="20dp"
         android:scrollbars="vertical"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

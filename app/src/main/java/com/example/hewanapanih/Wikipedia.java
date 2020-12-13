@@ -40,7 +40,7 @@ public class Wikipedia extends AppCompatActivity {
         volleyJsonObjectRequest(url);
 
         imageDisplay = findViewById(R.id.imageViewWikipedia);
-        imageDisplay.setImageBitmap(imageWikipedia);
+        if (imageWikipedia != null) imageDisplay.setImageBitmap(imageWikipedia);
     }
 
     // -------------------- wiki --------------------
@@ -57,12 +57,12 @@ public class Wikipedia extends AppCompatActivity {
                         textViewDescription.setText(text);
                         textViewDescription.append("\n\nPowered by wikipedia.org");
                     } catch (JSONException e) {
-                        textViewDescription.setText("Sorry. No information found about " + animalName +" on wikipedia.org");
+                        textViewDescription.setText("Sorry. No information found about " + animalName + " on wikipedia.org");
                     }
                 }, error -> {
-                    VolleyLog.d("Error: " + error.getMessage());
-                    textViewDescription.setText("Sorry. No information found about " + animalName +" on wikipedia.org");
-                });
+            VolleyLog.d("Error: " + error.getMessage());
+            textViewDescription.setText("Sorry. No information found about " + animalName + " on wikipedia.org");
+        });
 
         // Adding JsonObject request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq, REQUEST_TAG);

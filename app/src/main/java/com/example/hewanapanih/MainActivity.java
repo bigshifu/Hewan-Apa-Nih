@@ -1,12 +1,16 @@
 package com.example.hewanapanih;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,13 +29,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageDisplay; // Displayed Image
-    private TextView textPrediction; // Predicted names
-    private ImageButton cameraButton, galleryButton, exitButton, infoButton; // APP Buttons
+    private TextView textPrediction, tvNama; // Predicted names
 
 
     private final int REQUEST_IMAGE_CAPTURE = 1, REQUEST_IMAGE_GALLERY = 2; // REQUESTS
-    private InputImage imageFirebase; // Firebase Vision Image
-    private String animalName;  // Predicted animal name
+    private String namaHewan;  // Predicted animal name
     public static Bitmap bitmapImage; // User image
 
     @Override
@@ -39,53 +41,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Default content
-        animalName = "hunter";
-        bitmapImage = BitmapFactory.decodeResource(getResources(), R.drawable.deerhunter);
-        bitmapImage = resizeImage(bitmapImage);
+        namaHewan = "animal";
+        setViews();
+        showDialogNama();
+    }
 
-        // Image View
+    private void setViews() {
         imageDisplay = findViewById(R.id.imageView);
-        imageDisplay.setImageBitmap(bitmapImage);
-
-        // Image Buttons
-        cameraButton = findViewById(R.id.imageButtonCamera);
-        cameraButton.setOnClickListener(this);
-        galleryButton = findViewById(R.id.imageButtonGallery);
-        galleryButton.setOnClickListener(this);
-        exitButton = findViewById(R.id.imageButtonExit);
-        exitButton.setOnClickListener(this);
-        infoButton = findViewById(R.id.imageButtonInfo);
-        infoButton.setOnClickListener(this);
-
-        // Text Fields
+        findViewById(R.id.imageButtonCamera).setOnClickListener(this);
+        findViewById(R.id.imageButtonGallery).setOnClickListener(this);
+        findViewById(R.id.imageButtonDelete).setOnClickListener(this);
+        findViewById(R.id.imageButtonInfo).setOnClickListener(this);
         textPrediction = findViewById(R.id.textViewPrediction);
+        tvNama = findViewById(R.id.tvNama);
+    }
+
+    private void showDialogNama() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_form_nama, null);
+        dialog.setView(dialogView);
+
+        EditText etNama = dialogView.findViewById(R.id.etNama);
+        Button btnSubmit = dialogView.findViewById(R.id.btnSubmit);
+
+        btnSubmit.setOnClickListener(v -> {
+            String s = "Hai, " + etNama.getText().toString();
+            tvNama.setText(s);
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
     // -------------------- onClick Events --------------------
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.imageButtonCamera){
+        if (view.getId() == R.id.imageButtonCamera) {
             Intent iCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (iCamera.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(iCamera, REQUEST_IMAGE_CAPTURE);
             }
-        } else if(view.getId() == R.id.imageButtonGallery){
+        } else if (view.getId() == R.id.imageButtonGallery) {
             Intent iGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             iGallery.setType("image/*");
             startActivityForResult(iGallery, REQUEST_IMAGE_GALLERY);
-        }else if(view.getId() == R.id.imageButtonExit){
-            finish();
-            System.exit(0);
-        }else if(view.getId() == R.id.imageButtonInfo){
+        } else if (view.getId() == R.id.imageButtonDelete) {
+            imageDisplay.setImageBitmap(null);
+            namaHewan = "animal";
+            textPrediction.setText("");
+        } else if (view.getId() == R.id.imageButtonInfo) {
             // Wikipedia Support
             // Change Image bitmap to Byte Array (Better format to send between activities
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            if (bitmapImage != null)
+                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
 
-            Intent intent = new Intent(MainActivity.this, Wikipedia.class);
-            intent.putExtra("animalname", animalName); // add animal name to new activity
+            Intent intent = new Intent(this, Wikipedia.class);
+            intent.putExtra("animalname", namaHewan); // add animal name to new activity
             startActivity(intent);
         }
     }
@@ -95,14 +109,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            // Firebase Vision Image
+            InputImage inputImage;
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 //PHOTO FROM CAMERA
                 bitmapImage = (Bitmap) data.getExtras().get("data");
                 imageDisplay.setImageBitmap(bitmapImage);
                 bitmapImage = resizeImage(bitmapImage);
-                imageFirebase = InputImage.fromBitmap(bitmapImage, 0);
+                inputImage = InputImage.fromBitmap(bitmapImage, 0);
                 textPrediction.setText("Loading...");
-                labelImagesCloud(imageFirebase);
+                labelImagesCloud(inputImage);
             } else if (requestCode == REQUEST_IMAGE_GALLERY) {
                 //PHOTO FROM GALLERY
                 Uri uri = data.getData();
@@ -115,9 +131,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 imageDisplay.setImageBitmap(bitmapImage);
                 bitmapImage = resizeImage(bitmapImage);
-                imageFirebase = InputImage.fromBitmap(bitmapImage, 0);
+                inputImage = InputImage.fromBitmap(bitmapImage, 0);
                 textPrediction.setText("Loading...");
-                labelImagesCloud(imageFirebase);
+                labelImagesCloud(inputImage);
             }
         }
     }
@@ -147,12 +163,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // [START run_detector_cloud]
         labeler.process(image)
                 .addOnSuccessListener(imageLabels -> {
-                    animalName = imageLabels.get(0).getText();
+                    namaHewan = imageLabels.get(0).getText();
                     textPrediction.setText("");
                     for (ImageLabel label : imageLabels) {
                         String text = label.getText();
                         float confidence = label.getConfidence();
-                        textPrediction.append(text + " " + String.format(Locale.getDefault(),"%.3f", confidence) + "\n");
+                        textPrediction.append(text + " " + String.format(Locale.getDefault(), "%.3f", confidence) + "\n");
                     }
                 })
                 .addOnFailureListener(e -> {

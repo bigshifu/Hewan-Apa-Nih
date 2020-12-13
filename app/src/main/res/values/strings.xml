@@ -8,6 +8,6 @@
     <string name="LoadedImage">Loaded Image</string>
     <string name="Description">Description</string>
     <string name="Prediction">Prediction</string>
-    <string name="DescriptionContent">Recognize animals in a simple way.</string>
+    <string name="DescriptionContent">Yuk kenali hewan disekitarmu!</string>
     <string name="NightMode">Night Mode </string>
 </resources>
